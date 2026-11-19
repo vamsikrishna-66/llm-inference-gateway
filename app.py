@@ -6,7 +6,10 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 from starlette.background import BackgroundTask
 
+from admission import Admission
+
 app = FastAPI()
+app.add_middleware(Admission)
 
 
 class GenerateRequest(BaseModel):
