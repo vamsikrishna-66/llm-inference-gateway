@@ -5,6 +5,9 @@ services:
       - "127.0.0.1:8000:8000"
     environment:
       REDIS_URL: redis://redis:6379/0
+      OLLAMA_FALLBACK_URL: ${OLLAMA_FALLBACK_URL:-}
+      FIRST_OUTPUT_TIMEOUT: ${FIRST_OUTPUT_TIMEOUT:-10}
+      GENERATION_TIMEOUT: ${GENERATION_TIMEOUT:-60}
     depends_on: [ollama, redis]
   redis:
     image: redis:7.4-alpine
