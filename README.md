@@ -36,3 +36,15 @@ k6 run load/failures.js
 ```
 
 The suite checks successful fallback after primary rejection, HTTP 502 after both upstreams reject, and an SSE deadline error after primary output starts. It reports end-to-end request latency by scenario and fails on unexpected responses or p95 threshold violations.
+
+## Local demo and measured results
+
+Install `requirements.txt`, then run `python -m load.demo` from the repository root with ports 8000 and 11435 free. The command starts both local processes, waits for readiness, checks response bodies as well as status codes, and shuts down the processes on exit. Run `python -m load.demo --k6` to run the k6 thresholds against the same fixture.
+
+The Python client measured full-response latency over loopback on Linux amd64, using six concurrent clients and 36 requests per scenario. The benchmark uses synthetic upstreams with Redis disabled.
+
+| Scenario | p95 | Unexpected outcomes |
+| --- | ---: | ---: |
+| Primary rejects, fallback completes | 66.9 ms | 0/36 |
+| Both upstreams reject | 22.9 ms | 0/36 |
+| Primary stalls after output starts | 1009.1 ms | 0/36 |
